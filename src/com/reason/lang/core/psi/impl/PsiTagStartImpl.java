@@ -126,7 +126,7 @@ public class PsiTagStartImpl extends PsiToken<ORTypes> implements PsiTagStart {
         Project project = getProject();
 
         // find tag 'make' expression
-        PsiElement tagName = findChildByClass(PsiUpperSymbol.class);
+        PsiElement tagName = findChildByClass(PsiTagName.class);
         if (tagName == null) {
             // no tag name, it's not a custom tag
             tagName = findChildByClass(PsiLowerSymbol.class);
@@ -149,15 +149,40 @@ public class PsiTagStartImpl extends PsiToken<ORTypes> implements PsiTagStart {
             }
         } else {
             // The tag is a custom component
-            PsiQualifiedNamedElement module = psiFinder.findModuleFromQn(project, tagName.getText());
+            PsiQualifiedNamedElement module = psiFinder.findModuleFromQn(project, ((PsiTagName) tagName).getName());
             if (module == null) {
                 // If nothing found, look for an inner module in current file
                 String fileModuleName = ((FileBase) tagName.getContainingFile()).asModuleName();
                 module = psiFinder.findComponent(fileModuleName + "." + tagName.getText(), project, allScope(project));
             }
 
+            List<String> potentialPaths = ((PsiTagName) tagName).getPotentialPaths();
+            if (module == null) {
+                for (String potentialPath : potentialPaths) {
+                    module = psiFinder.findModuleFromQn(project, potentialPath);
+                    if (module != null) {
+                        break;
+                    }
+                }
+            }
+
             if (module != null) {
-                Collection<PsiLet> expressions = (module instanceof FileBase) ? PsiFileHelper.getLetExpressions((PsiFile) module) : ((PsiModule) module).getLetExpressions();
+                Collection<PsiLet> expressions;
+                if ((module instanceof FileBase)) {
+                    expressions = PsiFileHelper.getLetExpressions((PsiFile) module);
+                } else {
+                    String alias = ((PsiModule) module).getAlias();
+                    FileBase aliasModule = null;
+                    if (alias != null) {
+                        aliasModule = psiFinder.findFileModule(project, alias, allScope(project));
+                    }
+                    if (aliasModule != null) {
+                        expressions = PsiFileHelper.getLetExpressions(aliasModule);
+                    } else {
+                        expressions = ((PsiModule) module).getLetExpressions();
+                    }
+                }
+
                 for (PsiLet expression : expressions) {
                     if ("make".equals(expression.getName())) {
                         PsiFunction function = expression.getFunction();

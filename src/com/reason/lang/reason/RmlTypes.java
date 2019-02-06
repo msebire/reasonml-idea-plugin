@@ -66,6 +66,7 @@ public class RmlTypes extends ORTypes {
         C_TAG_START = new ORCompositeElementType("C_TAG_START", RmlLanguage.INSTANCE);
         C_TAG_CLOSE = new ORCompositeElementType("C_TAG_CLOSE", RmlLanguage.INSTANCE);
         C_TAG_PROPERTY = new ORCompositeElementType("C_TAG_PROPERTY", RmlLanguage.INSTANCE);
+        C_TAG_NAME = new ORCompositeElementType("C_TAG_NAME", RmlLanguage.INSTANCE);
         C_RECORD_EXPR = new ORCompositeElementType("C_RECORD_EXPR", RmlLanguage.INSTANCE);
         C_RECORD_FIELD = new ORCompositeElementType("C_RECORD_FIELD", RmlLanguage.INSTANCE);
         C_INTERPOLATION_EXPR = new ORCompositeElementType("C_INTERPOLATION_EXPR", RmlLanguage.INSTANCE);

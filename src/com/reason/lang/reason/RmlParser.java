@@ -551,6 +551,16 @@ public class RmlParser extends CommonParser<RmlTypes> {
 
             state.advance();
 
+            if (nextTokenType == m_types.UIDENT) {
+                state.add(mark(builder, jsxTagName, m_types.C_TAG_NAME).complete());
+                builder.setWhitespaceSkippedCallback((type, start, end) -> {
+                    if (state.isCurrentResolution(jsxTagName)) {
+                        state.popEnd();
+                        builder.setWhitespaceSkippedCallback(null);
+                    }
+                });
+            }
+
             builder.remapCurrentToken(m_types.TAG_NAME);
             state.wrapWith(nextTokenType == m_types.UIDENT ? m_types.C_UPPER_SYMBOL : m_types.C_LOWER_SYMBOL);
         }
@@ -569,12 +579,20 @@ public class RmlParser extends CommonParser<RmlTypes> {
 
             state.advance();
 
+            if (nextTokenType == m_types.UIDENT) {
+                state.add(mark(builder, jsxTagName, m_types.C_TAG_NAME).complete());
+            }
+
             builder.remapCurrentToken(m_types.TAG_NAME);
             state.wrapWith(nextTokenType == m_types.UIDENT ? m_types.C_UPPER_SYMBOL : m_types.C_LOWER_SYMBOL);
         }
     }
 
     private void parseGt(@NotNull PsiBuilder builder, ParserState state) {
+        if (state.isCurrentResolution(jsxTagName)) {
+            state.popEnd();
+        }
+
         if (state.isCurrentResolution(jsxTagPropertyEqValue)) {
             state.popEnd().popEnd();
         }
@@ -1021,7 +1039,8 @@ public class RmlParser extends CommonParser<RmlTypes> {
             state.complete();
         } else if (state.isCurrentResolution(module)) {
             state.updateCurrentResolution(moduleNamed);
-        } else if ((state.isCurrentResolution(jsxStartTag) || state.isCurrentResolution(jsxTagClose)) && state.previousTokenElementType == m_types.DOT) {
+        } else if ((state.isCurrentResolution(jsxStartTag) || state.isCurrentResolution(jsxTagClose) || state.isCurrentResolution(jsxTagName))
+                && state.previousTokenElementType == m_types.DOT) {
             // a namespaced custom component
             builder.remapCurrentToken(m_types.TAG_NAME);
         } else if (state.previousTokenElementType == m_types.PIPE) {

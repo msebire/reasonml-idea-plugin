@@ -47,13 +47,13 @@ public class JsxParsingTest extends BaseParsingTestCase {
         PsiLet let = first(letExpressions(parseCode("let _ = <Container.Test></Container.Test>")));
 
         PsiTagStart tagStart = first(PsiTreeUtil.findChildrenOfType(let, PsiTagStart.class));
-        PsiElement nextSibling = tagStart.getFirstChild().getNextSibling();
+        PsiElement nextSibling = tagStart.getFirstChild().getNextSibling().getFirstChild();
         assertEquals(RmlTypes.INSTANCE.TAG_NAME, nextSibling.getFirstChild().getNode().getElementType());
         nextSibling = nextSibling.getNextSibling().getNextSibling();
         assertEquals(RmlTypes.INSTANCE.TAG_NAME, nextSibling.getFirstChild().getNode().getElementType());
 
         PsiTagClose tagClose = first(PsiTreeUtil.findChildrenOfType(let, PsiTagClose.class));
-        nextSibling = tagClose.getFirstChild().getNextSibling();
+        nextSibling = tagClose.getFirstChild().getNextSibling().getFirstChild();
         assertEquals(RmlTypes.INSTANCE.TAG_NAME, nextSibling.getFirstChild().getNode().getElementType());
         nextSibling = nextSibling.getNextSibling().getNextSibling();
         assertEquals(RmlTypes.INSTANCE.TAG_NAME, nextSibling.getFirstChild().getNode().getElementType());

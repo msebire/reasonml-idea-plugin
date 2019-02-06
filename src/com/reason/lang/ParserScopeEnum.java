@@ -53,6 +53,7 @@ public enum ParserScopeEnum {
 
     jsxTag,
     jsxStartTag,
+    jsxTagName,
     jsxTagProperty,
     jsxTagPropertyEq,
     jsxTagPropertyEqValue,

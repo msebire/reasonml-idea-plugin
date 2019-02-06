@@ -58,6 +58,7 @@ public abstract class ORTypes {
     public IElementType C_TAG_START;
     public IElementType C_TAG_CLOSE;
     public IElementType C_TAG_PROPERTY;
+    public IElementType C_TAG_NAME;
     public IElementType C_FUN_CALL_PARAMS;
     public IElementType C_RECORD_EXPR;
     public IElementType C_RECORD_FIELD;

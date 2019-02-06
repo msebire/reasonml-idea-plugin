@@ -68,6 +68,7 @@ public class OclTypes extends ORTypes {
         C_TAG_START = new ORCompositeElementType("C_TAG_START", OclLanguage.INSTANCE);
         C_TAG_CLOSE = new ORCompositeElementType("C_TAG_CLOSE", OclLanguage.INSTANCE);
         C_TAG_PROPERTY = new ORCompositeElementType("C_TAG_PROPERTY", OclLanguage.INSTANCE);
+        C_TAG_NAME = new ORCompositeElementType("C_TAG_NAME", OclLanguage.INSTANCE);
         C_RECORD_EXPR = new ORCompositeElementType("C_RECORD_EXPR", OclLanguage.INSTANCE);
         C_RECORD_FIELD = new ORCompositeElementType("C_RECORD_FIELD", OclLanguage.INSTANCE);
         C_INTERPOLATION_EXPR = new ORCompositeElementType("C_INTERPOLATION_EXPR", OclLanguage.INSTANCE);
